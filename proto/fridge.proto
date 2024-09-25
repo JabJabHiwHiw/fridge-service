@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/JabJabHiwHiw/fridge-service/proto";
+
+import "google/protobuf/timestamp.proto"; 
+
+service FridgeService {
+    rpc GetFridge(FridgeRequest) returns (FridgeItemsResponse) {}
+    rpc GetFridgeItem(FridgeItemRequest) returns (FridgeItemResponse) {}
+    rpc GetExpiredItems(FridgeRequest) returns (FridgeItemsResponse) {}
+    rpc AddItem(FridgeItem) returns (FridgeItemResponse) {}
+    rpc UpdateItem(FridgeItem) returns (FridgeItemResponse) {}
+    rpc RemoveItem(FridgeItemRequest) returns (Empty) {}
+}
+
+message Empty {}
+
+message FridgeItem {
+    string id = 1;
+    string owner = 2;
+    string name = 3;              
+    string type = 4;            
+    string amount = 5;           
+    google.protobuf.Timestamp manufactured_date = 6; 
+    google.protobuf.Timestamp expired_date = 7;
+}
+
+message FridgeRequest {
+    string owner = 1; 
+}
+
+message FridgeItemRequest {
+    string id = 1; 
+}
+
+message FridgeItemsResponse {
+    repeated FridgeItem items = 1; 
+    string error = 2;
+}
+
+message FridgeItemResponse {
+    FridgeItem item = 1; 
+    string error = 2;
+}
