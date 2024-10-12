@@ -6,7 +6,7 @@ option go_package = "github.com/JabJabHiwHiw/fridge-service/proto";
 
 import "google/protobuf/timestamp.proto"; 
 
-service FridgeService {
+service FridgeItemService {
     rpc GetFridge(FridgeRequest) returns (FridgeItemsResponse) {}
     rpc GetFridgeItem(FridgeItemRequest) returns (FridgeItemResponse) {}
     rpc GetExpiredItems(FridgeRequest) returns (FridgeItemsResponse) {}
@@ -19,16 +19,15 @@ message Empty {}
 
 message FridgeItem {
     string id = 1;
-    string owner = 2;
-    string name = 3;              
-    string type = 4;            
-    string amount = 5;           
-    google.protobuf.Timestamp manufactured_date = 6; 
-    google.protobuf.Timestamp expired_date = 7;
+    string user_id = 2;
+    string ingredient_id = 3;              
+    string quantity = 4;                     
+    google.protobuf.Timestamp added_date = 5; 
+    google.protobuf.Timestamp expired_date = 6;
 }
 
 message FridgeRequest {
-    string owner = 1; 
+    string user_id = 1; 
 }
 
 message FridgeItemRequest {
@@ -42,5 +41,32 @@ message FridgeItemsResponse {
 
 message FridgeItemResponse {
     FridgeItem item = 1; 
+    string error = 2;
+}
+
+
+service IngredientService {
+    rpc GetIngredientItem(IngredientItemRequest) returns (IngredientItemResponse) {}
+    rpc GetIngredients(Empty) returns (IngredientsResponse) {}
+    rpc AddIngredient(IngredientItem) returns (IngredientItemResponse) {}
+}
+
+message IngredientItem {
+    string id = 1;
+    string name = 2;
+    string category = 3;
+}
+
+message IngredientItemRequest {
+    string id = 1;
+}
+
+message IngredientItemResponse {
+    IngredientItem ingredient = 1;
+    string error = 2;
+}
+
+message IngredientsResponse {
+    repeated IngredientItem ingredients = 1;
     string error = 2;
 }

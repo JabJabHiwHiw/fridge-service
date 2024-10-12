@@ -33,14 +33,20 @@ func main() {
 	fmt.Println("Connected to MongoDB")
 
 	db := client.Database("fridge-service")
-	collection := db.Collection("fridge")
+	fridgeItemCollection := db.Collection("fridge_item")
+	ingredientCollection := db.Collection("ingredient")
 
-	fridgeService := services.FridgeService{
-		Collection: collection,
+	fridgeItemService := services.FridgeItemService{
+		Collection: fridgeItemCollection,
+	}
+
+	ingredientService := services.IngredientService{
+		Collection: ingredientCollection,
 	}
 
 	grpcServer := grpc.NewServer()
-	proto.RegisterFridgeServiceServer(grpcServer, &fridgeService)
+	proto.RegisterFridgeItemServiceServer(grpcServer, &fridgeItemService)
+	proto.RegisterIngredientServiceServer(grpcServer, &ingredientService)
 
 	listener, err := net.Listen("tcp", ":8080")
 	if err != nil {
