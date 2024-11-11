@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	client, err := mongo.Connect(options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.Connect(options.Client().ApplyURI("mongodb://root:example@mongodb:27017"))
 
 	if err != nil {
 		log.Fatal(err)
@@ -48,12 +48,12 @@ func main() {
 	proto.RegisterFridgeItemServiceServer(grpcServer, &fridgeItemService)
 	proto.RegisterIngredientServiceServer(grpcServer, &ingredientService)
 
-	listener, err := net.Listen("tcp", ":8080")
+	listener, err := net.Listen("tcp", ":50052")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Server started on port :8080")
+	fmt.Println("Server started on port :50052")
 
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatal(err)
